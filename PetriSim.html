@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>PetriSim</title>
+    <script type="text/javascript" src="PetriSim.js"></script>
+    <style>
+        .selectBox {
+            display:inline-block;
+        }
+        
+        .toolbar {
+            position:fixed;
+            top:0px;
+            left:0px;
+        }
+        
+        #commands {
+            position:fixed;
+            top:0px;
+            right:20px;
+        }
+        
+        #selection {
+            position:fixed;
+            top:20px;
+            left:20px;
+        }
+        
+        #items {
+            margin-top:40px;
+        }
+        
+        #graph_view {
+            margin-top:40px;
+        }
+    </style>
+</head>
+<body>
+    <div id="items">
+        <div id="nodes" class="selectBox"></div>
+        <div id="transitions" class="selectBox"></div>
+        <div id="bounds" class="selectBox"></div>
+    </div>
+    <div id="toolbar" class="toolbar">
+        <button onclick="app.newNode();">+Node</button>
+        <button onclick="app.newTransition();">+Transition</button>
+        <button onclick="app.newBoundNT();">N->T link</button>
+        <button onclick="app.newBoundTN();">T->N link</button>
+        <button onclick="app.net.iterate();">step</button>
+        <button onclick="app.save();">save</button>
+        <button onclick="app.load();">load</button>
+        <button onclick="app.toString();">export to text</button>
+        <button onclick="app.fromString();">import from text</button>
+        <button onclick="app.hideItems();">hide items</button>
+    </div>
+    <div id="commands"></div>
+    <div id="selection">
+        <button onclick="hideSelection();">hide</button>
+        <div>
+        
+        </div>
+    </div>
+    <canvas id="graph_view" width=1000 height=600></canvas>
+    <div id="export"></div>
+</body>
+</html>
