@@ -1,3 +1,9 @@
+PetriSim v3.1
+*   fixed bug of unchangeable number of tokens in newly created nodes (brought by 2.0)
+
+PetriSim v3.0
+*   added ability to display the PRE and POST matrix of the petri net
+
 PetriSim v2.1
 *   added support for selecting overlapped elements
 
