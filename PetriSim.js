@@ -288,8 +288,8 @@ class TransitionDisplay {
 */
 class Node {
     constructor(tokens, duration, description) {
-        this.duration = duration | 1;
-        this.tokens = tokens | [];
+        this.duration = duration || 1;
+        this.tokens = tokens || [];
         if (this.tokens.length == 0)
         {
             for (var i=0; i<this.duration; i++)
