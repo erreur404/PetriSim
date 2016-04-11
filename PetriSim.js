@@ -760,22 +760,40 @@ class PetriNet {
         }
         for (var i=0; i<this.transitions.length; i++)
         {
-            result.Pre = new Array(this.nodes.length);
-            result.Post = new Array(this.nodes.length);
             var tr = this.transitions[i];
             var trans = result.T.indexOf(tr);
+            result.Pre[trans] = new Array(this.nodes.length);
+            result.Post[trans] = new Array(this.nodes.length);
 
             for (var j=0; j<tr.incoming.length; j++)
             {
-                var node = result.P.indexOf(tr.incoming[i].getNode());
-                result.Pre[trans][node] = tr.incoming[i].getWeight();
+                var node = result.P.indexOf(tr.incoming[j].getNode());
+                result.Pre[trans][node] = tr.incoming[j].getWeight();
             }
             for (var j=0; j<tr.outgoing.length; j++)
             {
-                var node = result.P.indexOf(tr.outgoing[i].getNode());
-                result.postPre[trans][node] = tr.outgoing[i].getWeight();
+                var node = result.P.indexOf(tr.outgoing[j].getNode());
+                result.Post[trans][node] = tr.outgoing[j].getWeight();
             }
         }
+        
+        for (var i=0; i<this.transitions.length; i++)
+        {
+            for (var j=0; j<this.nodes.length; j++)
+            {
+                var Prem = result["Pre"];
+                var Postm = result["Post"];
+                if (typeof(Prem[i][j]) == "undefined")
+                {
+                    Prem[i][j] = 0;
+                }
+                if (typeof(Postm[i][j]) == "undefined")
+                {
+                    Postm[i][j] = 0;
+                }
+            }
+        }
+        return result;
     }
 }
 
@@ -1009,6 +1027,63 @@ class App {
         var txt = prompt("collez la sauvegarde à importer");
         window.localStorage.setItem("PetriSim", txt);
         this.load();
+    }
+    
+    array2matrix(array, header, sider, title) {
+        var table = document.createElement("table");
+        table.appendChild(document.createElement("tr"));
+        table.children[0].appendChild(document.createElement("th"));
+        table.children[0].children[0].innerText = title;
+        for (var i=0; i<header.length; i++)
+        {
+            var header_cell = document.createElement("th");
+            header_cell.innerText = header[i];
+            table.children[0].appendChild(header_cell);
+        }
+        for (var i=0; i<sider.length; i++)
+        {
+            table.appendChild(document.createElement("tr"));
+            var row = table.children[table.children.length-1];
+            var sider_cell = document.createElement("td");
+            sider_cell.innerText = sider[i];
+            row.appendChild(sider_cell);
+            for (var j=0; j<header.length; j++)
+            {
+                let data_cell = document.createElement("td");
+                data_cell.innerText = array[j][i];
+                row.appendChild(data_cell);
+            }
+        }
+        
+        return table;
+    }
+    
+    toPrePostMatrix() {
+        var matrix = this.net.toAlgebra();
+        var headers = [];
+        var siders = [];
+        document.getElementById("matrix").innerHTML = ""
+        for (var i=0; i<this.transitions_disp.length; i++)
+        {
+            headers.push(this.transitions_disp[i].getTransition().getName());
+        }
+        for (var i=0; i<this.nodes_disp.length; i++)
+        {
+            siders.push(this.nodes_disp[i].getNode().getDescrition());
+        }
+        document.getElementById("matrix").appendChild(this.array2matrix(matrix["Pre"], headers, siders, "PRE"));
+        document.getElementById("matrix").appendChild(this.array2matrix(matrix["Post"], headers, siders, "POST"));
+        var res = []
+        for (var i=0; i<headers.length; i++)
+        {
+            res[i] = []
+            for (var j=0; j<siders.length; j++)
+            {
+                console.log(matrix["Post"][i][j]);
+                res[i][j] = matrix["Post"][i][j] - matrix["Pre"][i][j];
+            }
+        }
+        document.getElementById("matrix").appendChild(this.array2matrix(res, headers, siders, "INCI"));
     }
 
     onMouseDown_handle (e) {

@@ -33,6 +33,14 @@
         #graph_view {
             margin-top:40px;
         }
+        
+        table, td, th {
+            border:1px solid black;
+        }
+        
+        td, th {
+            width:40px;
+        }
     </style>
 </head>
 <body>
@@ -51,6 +59,7 @@
         <button onclick="app.load();">load</button>
         <button onclick="app.toString();">export to text</button>
         <button onclick="app.fromString();">import from text</button>
+        <button onclick="app.toPrePostMatrix();">Compute Matrix</button>
         <button onclick="app.hideItems();">hide items</button>
     </div>
     <div id="commands"></div>
@@ -62,5 +71,6 @@
     </div>
     <canvas id="graph_view" width=1000 height=600></canvas>
     <div id="export"></div>
+    <div id="matrix"></div>
 </body>
 </html>
